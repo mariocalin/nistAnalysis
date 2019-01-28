@@ -10,9 +10,30 @@ import java.util.Arrays;
  */
 public class Entry {
 
+<<<<<<< HEAD
+	/**
+	 * ID of the vulnerability
+	 */
+	private String ID;
+
+	/**
+	 * Category of the vulnerability
+	 */
+	private Category category;
+
+	/**
+	 * CVSS score of the vulnerability
+	 */
+	private double score;
+
+	/**
+	 * List of vulnerable products
+	 */
+=======
 	private String ID;
 	private Category category;
 	private double score;
+>>>>>>> branch 'master' of https://github.com/mariocalin/nistAnalysis.git
 	private String[] vulnerableSoftware;
 
 	public Entry() {

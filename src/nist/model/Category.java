@@ -11,6 +11,54 @@ import java.util.List;
  */
 public class Category {
 
+<<<<<<< HEAD
+	/**
+	 * CVE ID of the category
+	 */
+	private String ID;
+
+	/**
+	 * Entries that have this category
+	 */
+	private List<Entry> entries;
+
+	public Category(String ID) {
+		this.entries = new LinkedList<Entry>();
+
+		this.ID = ID;
+	}
+
+	public String getID() {
+		return ID;
+	}
+
+	public void setID(String iD) {
+		ID = iD;
+	}
+
+	public List<Entry> getEntries() {
+		return entries;
+	}
+
+	public void setEntries(List<Entry> entries) {
+		this.entries = entries;
+	}
+
+	/**
+	 * Gets the total number of vulnerability entries of the category
+	 * 
+	 * @return total number of entries
+	 */
+	public int getTotalEntries() {
+		return entries.size();
+	}
+
+	/**
+	 * Gets the average CVSS score of all the vulnerability entries of the category
+	 * 
+	 * @return CVSS average score
+	 */
+=======
 	private String ID;
 	private List<Entry> entries;
 
@@ -40,6 +88,7 @@ public class Category {
 		return entries.size();
 	}
 
+>>>>>>> branch 'master' of https://github.com/mariocalin/nistAnalysis.git
 	public double getAverageScore() {
 		double acumulado = entries.stream().mapToDouble(e -> e.getScore()).sum();
 		return acumulado / (double) entries.size();

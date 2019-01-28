@@ -75,6 +75,123 @@ public class XMLNistParser implements INistDataAnalysis {
 		this.XML_SOURCE = sourceFile;
 	}
 
+<<<<<<< HEAD
+	/**
+	 * Obtains an array of strings of vulnerable software from the vuln:product DOM
+	 * node
+	 * 
+	 * @param node
+	 *            vuln:product DOM Node
+	 * @return Array of vulnerable software names
+	 */
+	private String[] obtainVulnerableSoftware(Node node) {
+		ArrayList<String> sts = new ArrayList<String>();
+		try {
+			// Obtains the text of the node
+			NodeList productnodes = ((Element) node).getElementsByTagName("vuln:product");
+			for (int i = 0; i < productnodes.getLength(); i++) {
+				Node subnode = productnodes.item(i);
+				sts.add(subnode.getTextContent().substring(7, subnode.getTextContent().length()));
+			}
+
+		} catch (Exception ex) {
+			// let it go
+		}
+
+		return sts.toArray(new String[sts.size()]);
+	}
+
+	/**
+	 * Gets the CVSS score of the vuln:cvss DOM node
+	 * 
+	 * @param node
+	 *            vuln:cvss DOM Node
+	 * @return CVSS Vulnerability score
+	 */
+	private double obtainScore(Node node) {
+		try {
+			NodeList cvssNodes = ((Element) node).getElementsByTagName("vuln:cvss").item(0).getChildNodes();
+			Node baseMetrics = searchNode(cvssNodes, "cvss:base_metrics");
+			return Double
+					.parseDouble(((Element) baseMetrics).getElementsByTagName("cvss:score").item(0).getTextContent());
+		} catch (Exception ex) {
+			return 0;
+		}
+	}
+
+	/**
+	 * Searches a node by its name which should be inside a node lists
+	 * 
+	 * @param nodes
+	 *            List of nodes
+	 * @param name
+	 *            Node name
+	 * @return node if found, null if not found
+	 */
+	private Node searchNode(NodeList nodes, String name) {
+		for (int i = 0; i < nodes.getLength(); i++) {
+			Node node = nodes.item(i);
+			if (node.getNodeName().equals(name))
+				return node;
+		}
+		return null;
+	}
+
+	/**
+	 * Obtain the category of a vulnerability entry in the vuln:cew DOM Node and
+	 * stores/references it in the list of already created categories. Can be null,
+	 * which means that the vulnerability has no category assigned yet.
+	 * 
+	 * @param node
+	 *            vuln:cew DOM Node
+	 * @param categories
+	 *            Category list
+	 * @return Category instance
+	 */
+	private Category obtainCategory(Node node, LinkedList<Category> categories) {
+
+		Element eElement = (Element) node;
+		NodeList nodes = eElement.getElementsByTagName("vuln:cwe");
+		if (nodes.getLength() == 0)
+			return null;
+
+		Category temporalCategory = new Category(nodes.item(0).getAttributes().getNamedItem("id").getNodeValue());
+
+		if (categories.contains(temporalCategory))
+			return categories.stream().filter(c -> c.equals(temporalCategory)).findFirst().get();
+		else {
+			categories.add(temporalCategory);
+			return temporalCategory;
+		}
+
+	}
+
+	/**
+	 * Obtains a Document instance of the XML Source
+	 * 
+	 * @return Document
+	 * @throws ParserConfigurationException
+	 *             Parser configuration exception
+	 * @throws SAXException
+	 *             Sax Exception
+	 * @throws IOException
+	 *             Error processing the file
+	 */
+	private Document getDocument() throws ParserConfigurationException, SAXException, IOException {
+		File file = new File(XML_SOURCE);
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+		Document document = documentBuilder.parse(file);
+		return document;
+	}
+
+	@SuppressWarnings("unused")
+	public static class XMLFiles {
+		public static final String FULL_YEAR_2015 = "XMLData/nvdcve-2.0-2015.xml";
+		public static final String FULL_YEAR_2016 = "XMLData/nvdcve-2.0-2016.xml";
+		public static final String FULL_YEAR_2017 = "XMLData/nvdcve-2.0-2017.xml";
+		private static final String ACTUAL_YEAR_2018 = "XMLData/nvdcve-2.0-recent.xml";
+=======
 	private String[] obtainVulnerableSoftware(Node node) {
 		ArrayList<String> sts = new ArrayList<String>();
 		try {
@@ -145,6 +262,7 @@ public class XMLNistParser implements INistDataAnalysis {
 		public static final String FULL_YEAR_2017 = "XMLData/nvdcve-2.0-2017.xml";
 		private static final String ACTUAL_YEAR_2018 = "XMLData/nvdcve-2.0-recent.xml";
 
+>>>>>>> branch 'master' of https://github.com/mariocalin/nistAnalysis.git
 	}
 
 }
