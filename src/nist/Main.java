@@ -5,7 +5,6 @@ import nist.functions.INistDataAnalysis;
 import nist.functions.*;
 import nist.model.Result;
 
-<<<<<<< HEAD
 /**
  * Main class - Entry point of the analyzer
  * 
@@ -33,15 +32,6 @@ public class Main {
 		result.entriesResult().toCSV("entries-2017.csv", true);
 
 		System.out.println("END OF PROGRAM");
-=======
-public class Main {
-
-	public static void main(String[] args) throws Exception {
-		INistDataAnalysis analyzer = new XMLNistParser(XMLNistParser.XMLFiles.FULL_YEAR_2017);
-		Result result = analyzer.createResult();
-		result.entriesResult().toCSV("entries-2017.csv", true);
-		System.out.println("OK");
->>>>>>> branch 'master' of https://github.com/mariocalin/nistAnalysis.git
 	}
 
 }
