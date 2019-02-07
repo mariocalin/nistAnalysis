@@ -13,21 +13,56 @@ This tool is developer-oriented, that is, no GUI nor Command-Line program is pro
 In order to run the tool, the Main.java file contains main function to be run with the IDE. 
 
 ### Documentation
-The complete java documentation can be found in the doc folder, inside this repository. However, in this section the most important aspects of the tool in terms of development are described.
+The complete java documentation can be found in the doc folder inside this repository. However, in this section the most important aspects of the tool in terms of development are described.
 
 #### src/nist/functions
+There are three important in this package:
+1. *INistDataAnalysis.java*: Interface that defines what operations a Nist data analyzer must have. This interface is created in order to provide parsers to different file formats (XML or JSON for example).
+2. *INistDataResult.java*: Interface that defines what a *NistDataResult* must have. Every NistDataAnalyzer must create NistDataResults.
+3. *XMLNistParser.java* which implements *INistDataAnalysis*. XML Parser for the XML Data Feed. It will parse the XML into the tool model.
 
 #### src/nist/model
+There are 3 main concepts in the model. 
+* **Entry**: Represents a vulnerability entry. 
+* **Category**: Representes a CWE vulnerability category
+* **Result**: Represents a summary of a year in terms of vulnerabilities. It has two different *types* of Result: per category and per vulnerabilities. 
 
 #### src/nist/utils
+There is only one class that contains some utils in terms of readability. 
 
 #### Main.java
 This file is the entry point for the tool that contains the main function.
 
+#### Usage sample
+```java
+public static void main(String[] args) throws Exception {
+	// Creates an analyzer instance with the year to be analyzed
+	INistDataAnalysis analyzer = new XMLNistParser(XMLNistParser.XMLFiles.FULL_YEAR_2017);
+
+	// Creates a result
+	Result result = analyzer.createResult();
+
+	// Prints the entries result to a CSV file or String
+	result.entriesResult().toCSV("entries-2017.csv", true);
+	result.entriesResult().toString();
+
+	// Prints the categories result to a CSV file or String
+	result.categoriesResult().toCSV("categoies-2017.csv", true);
+	result.categoriesResult().toString();
+
+	System.out.println("END OF PROGRAM");
+}
+```
+#### Diagram 
+The next image will show a diagram of the execution of the tool.
+
+![alt text](https://github.com/mariocalin/nistAnalysis/blob/master/images/diagram.png "Tool Diagram")
+
+
 #### XML Data feeds
 In order to run the tool and get results, it is mandatory to download the data feeds that NIST provides in their official website (https://nvd.nist.gov/vuln/data-feeds) and place them into the corresponding folder with the same exact name that is initialy defined. At the moment, only XML feeds are allowed and the folder is _XMLData_. 
 
-*XML data feed structure*
+##### *XML data feed structure*
 Each XML file conains multiple elements called <entry>. This element represents a vulnerability registered in the database. Per each entry, some elements will be appended as children of the entry. Among other info elements (like ID or published date), the most interesting elements are:
 * <vuln:vulnerable-configuration>. This element will contain in what configuration the vulnerability was found. NIST provides a list of configurations where they test the vulnerabilities.
 * <vuln:vulnerable-software-list>. This element will contain the concrete products that are affected by the vulnerability.
