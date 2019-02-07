@@ -68,3 +68,10 @@ Each XML file conains multiple elements called <entry>. This element represents 
 * <vuln:vulnerable-software-list>. This element will contain the concrete products that are affected by the vulnerability.
 * <vuln:cvss>. CVSS metrics for the vulnerability. Special intetrest in the final score given by the <cvss:score> element.
 * <vuln:cwe>. Category of the vulnerability in the CVE dictionary.
+	
+##### *Parsing mechanism*
+The parsing mechanism is very simple:
+1. The XMLNistParser recibes a xml file path corresponding to the Nist XML year data feed. It loads the file and, by using the java lbiraries of javax.xml.parsers and org.w3c.dom, it creates a Result object containing the information needed in a object oriented way.
+2. With the Result object, you can choose wether to print the entries results or the categories results (via CSV or console). The only difference between is the way of representing the information:
+* EntryResult is focused on vulnerability entries, showing information about the entry code, the entry cvss score and the products affected by the vulnerability.
+* CategoryResult is foucsed on cwe categories, showing information about the total number of vulnerablity entries that a category has and its average vulnerability cvss score.
